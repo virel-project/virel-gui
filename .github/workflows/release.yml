@@ -50,4 +50,3 @@ jobs:
           files: |
             bin/virel-gui-linux-amd64-${{ env.TAG_VERSION }}.tar.gz
             bin/virel-gui-windows-amd64-${{ env.TAG_VERSION }}.zip
-            bin/virel-gui-darwin-arm64-${{ env.TAG_VERSION }}.tar.gz
