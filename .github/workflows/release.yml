@@ -1,0 +1,58 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*' # Matches tags starting with 'v'
+
+jobs:
+  build:
+    name: Build and Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 'stable'
+
+      - name: Install Fyne dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc libgl1-mesa-dev xorg-dev
+          # Additional dependencies for Windows cross-compilation
+          sudo apt-get install -y gcc-mingw-w64
+          # Additional dependencies for macOS cross-compilation
+          sudo apt-get install -y clang libgl1-mesa-dev xorg-dev
+
+      - name: Get tag version
+        id: tag
+        run: echo "TAG_VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+
+      - name: Build for Linux amd64
+        run: |
+          GOOS=linux GOARCH=amd64 go build -o "bin/linux-amd64/virel-gui" .
+          tar -czf "bin/virel-gui-linux-amd64-${{ env.TAG_VERSION }}.tar.gz" -C bin/linux-amd64 .
+
+      - name: Build for Windows amd64
+        run: |
+          GOOS=windows GOARCH=amd64 CC=x86_64-w64-mingw32-gcc CGO_ENABLED=1 go build -o "bin/windows-amd64/virel-gui.exe" .
+          zip -j "bin/virel-gui-windows-amd64-${{ env.TAG_VERSION }}.zip" bin/windows-amd64/virel-gui.exe
+
+      - name: Build for Mac arm64
+        run: |
+          GOOS=darwin GOARCH=arm64 CGO_ENABLED=1 go build -o "bin/darwin-arm64/virel-gui" .
+          tar -czf "bin/virel-gui-darwin-arm64-${{ env.TAG_VERSION }}.tar.gz" -C bin/darwin-arm64 .
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: Release ${{ env.TAG_VERSION }}
+          tag_name: ${{ env.TAG_VERSION }}
+          body: "Automated release for version ${{ env.TAG_VERSION }}"
+          files: |
+            bin/virel-gui-linux-amd64-${{ env.TAG_VERSION }}.tar.gz
+            bin/virel-gui-windows-amd64-${{ env.TAG_VERSION }}.zip
+            bin/virel-gui-darwin-arm64-${{ env.TAG_VERSION }}.tar.gz
