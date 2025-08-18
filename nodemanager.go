@@ -11,6 +11,10 @@ type NodeManger struct {
 }
 
 func NewNodeManager(rpcs string) *NodeManger {
+	if len(rpcs) == 0 {
+		rpcs = RPC_URLS
+	}
+
 	rpcUrls := strings.Split(rpcs, ";")
 	return &NodeManger{
 		rpcUrls: rpcUrls,

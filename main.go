@@ -40,6 +40,8 @@ var log = logger.New()
 
 var T = lang.Lang[language.English]
 
+var nodeManager *NodeManger
+
 func init() {
 	tags, err := locale.DetectAll()
 	if err != nil {
@@ -59,6 +61,11 @@ func init() {
 		}
 	}
 
+	rpcUrls, err := os.ReadFile("rpc-urls.txt")
+	if err != nil {
+		rpcUrls = []byte(RPC_URLS)
+	}
+	nodeManager = NewNodeManager(string(rpcUrls))
 }
 
 const width_limit = 750
@@ -134,8 +141,6 @@ func pageHome() {
 	w.SetContent(body)
 }
 
-var nodeManager *NodeManger
-
 func pageOpen() {
 	title := widget.NewRichTextFromMarkdown("## " + T.OpenWallet)
 
@@ -163,12 +168,6 @@ func pageOpen() {
 				pageOpen()
 				return
 			}
-
-			rpcUrls, err := os.ReadFile("rpc-urls.txt")
-			if err != nil {
-				rpcUrls = []byte(RPC_URLS)
-			}
-			nodeManager = NewNodeManager(string(rpcUrls))
 
 			wall, err := wallet.OpenWallet(nodeManager.Urls()[0], fileContent, []byte(walletPass.Text))
 			if err != nil {
