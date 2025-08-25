@@ -3,6 +3,7 @@ package lang
 import (
 	"embed"
 	"reflect"
+	"runtime"
 	"strings"
 
 	"github.com/BurntSushi/toml"
@@ -90,6 +91,11 @@ func init() {
 		if err != nil {
 			panic(err)
 		}
+
+		if runtime.GOOS == "js" && v.Name() == "zh-cn.toml" {
+			continue
+		}
+
 		languageName, err := language.Parse(strings.Split(v.Name(), ".")[0])
 		if err != nil {
 			panic(err)
