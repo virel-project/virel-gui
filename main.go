@@ -7,6 +7,7 @@ import (
 	"net/url"
 	"os"
 	"regexp"
+	"runtime"
 	"strconv"
 	"strings"
 	"time"
@@ -14,6 +15,7 @@ import (
 	"virel-gui/mycontainer"
 	"virel-gui/mylayout"
 	"virel-gui/mywidget"
+	"virel-gui/save"
 
 	"github.com/virel-project/virel-blockchain/address"
 	"github.com/virel-project/virel-blockchain/config"
@@ -33,10 +35,6 @@ import (
 	"github.com/Xuanwo/go-locale"
 	"golang.org/x/text/language"
 )
-
-const VERSION_MAJOR = 1
-const VERSION_MINOR = 3
-const VERSION_PATCH = 1
 
 const TICKER = "VRL"
 
@@ -177,7 +175,7 @@ func pageHome() {
 func pageOpen() {
 	title := widget.NewRichTextFromMarkdown("## " + T.OpenWallet)
 
-	walls, err := getWallets()
+	walls, err := save.GetWallets()
 	if err != nil {
 		ErrorDialog(w, fmt.Errorf("failed to get wallet list: %w", err))
 		return
@@ -195,7 +193,7 @@ func pageOpen() {
 		loadingPage(T.LoadingWallet)
 		go func() {
 			ci := walletName.Selected
-			fileContent, err := os.ReadFile(ci + ".keys")
+			fileContent, err := save.ReadWallet(ci)
 			if err != nil {
 				ErrorDialog(w, fmt.Errorf("failed to open wallet: %w", err))
 				pageOpen()
@@ -266,12 +264,20 @@ func pageCreate() {
 		loadingPage(T.CreatingWallet)
 
 		go func() {
-			wall, db, err := wallet.CreateWallet(nodeManager.Urls()[0], []byte(walletPass.Text), false)
+
+			_, err := save.ReadWallet(wallName)
+			if err == nil {
+				ErrorDialog(w, fmt.Errorf("wallet %v already exists", wallName))
+				pageOpen()
+				return
+			}
+
+			wall, db, err := wallet.CreateWallet(nodeManager.Urls()[0], []byte(url.PathEscape(walletPass.Text)), runtime.GOOS == "js")
 			if err != nil {
 				ErrorDialog(w, fmt.Errorf("failed to create wallet: %w", err))
 			}
 
-			saveWallet(wallName, db)
+			save.SaveWallet(wallName, db)
 
 			pageWallet(wall)
 			displaySeedDialog(wall)
@@ -304,18 +310,25 @@ func pageRestore() {
 	form.OnSubmit = func() {
 		loadingPage(T.LoadingWallet)
 		go func() {
-			filename := url.PathEscape(walletName.Text) + ".keys"
+			filename := url.PathEscape(walletName.Text)
 
-			_, err := os.Stat(filename)
+			_, err := save.ReadWallet(filename)
 			if err == nil {
 				ErrorDialog(w, fmt.Errorf("wallet %v already exists", filename))
 				pageOpen()
 				return
 			}
-			wall, err := wallet.CreateWalletFileFromMnemonic(nodeManager.Urls()[0], filename, walletSeed.Text, []byte(walletPass.Text))
+			wall, db, err := wallet.CreateWalletFromMnemonic(nodeManager.Urls()[0], walletSeed.Text, []byte(walletPass.Text), runtime.GOOS == "js")
 			if err != nil {
 				ErrorDialog(w, fmt.Errorf("failed to open wallet: %w", err))
-				pageOpen()
+				pageRestore()
+				return
+			}
+
+			err = save.SaveWallet(filename, db)
+			if err != nil {
+				ErrorDialog(w, err)
+				pageRestore()
 				return
 			}
 
@@ -573,7 +586,7 @@ func pageWallet(wall *wallet.Wallet) {
 				return
 			}
 			nodeManager.rpcUrls = strings.Split(nodeUrlInput.Text, ";")
-			os.WriteFile("rpc-urls.txt", []byte(nodeUrlInput.Text), 0o644)
+			save.SaveRpcUrls([]byte(nodeUrlInput.Text))
 			nodeLbl.SetText(T.NodeAddress + ": " + wall.GetRpcDaemonAddress())
 		})
 	})
@@ -623,6 +636,7 @@ func pageWallet(wall *wallet.Wallet) {
 
 func displaySeedDialog(wall *wallet.Wallet) {
 	confirmBtn := widget.NewButton(T.Confirm, nil)
+	confirmBtn.Disable()
 	checkbox := widget.NewCheck(T.UnderstandSeed, func(b bool) {
 		if b {
 			confirmBtn.Enable()
@@ -651,28 +665,7 @@ func displaySeedDialog(wall *wallet.Wallet) {
 		d.Hide()
 	}
 
-	d.Show()
-}
-
-func saveWallet(walletName string, db []byte) {
-	os.WriteFile(walletName+".keys", db, 0o660)
-}
-func getWallets() ([]string, error) {
-	entries, err := os.ReadDir(".")
-	if err != nil {
-		return nil, err
-	}
-	var walls = []string{}
-	for _, v := range entries {
-		if v.IsDir() || len(v.Name()) < 6 {
-			continue
-		}
-		if v.Name()[len(v.Name())-5:] != ".keys" {
-			continue
-		}
-		n := v.Name()[:len(v.Name())-5]
-		fmt.Println("correct name!", n)
-		walls = append(walls, n)
-	}
-	return walls, nil
+	fyne.DoAndWait(func() {
+		d.Show()
+	})
 }
