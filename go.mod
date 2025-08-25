@@ -9,13 +9,12 @@ require (
 	github.com/BurntSushi/toml v1.5.0
 	github.com/Xuanwo/go-locale v1.1.3
 	github.com/cloudfoundry/jibber_jabber v0.0.0-20151120183258-bcc4c8345a21
-	github.com/virel-project/virel-blockchain v1.3.1
+	github.com/virel-project/virel-blockchain v1.3.2
 	golang.org/x/text v0.28.0
 )
 
 require (
 	fyne.io/systray v1.11.0 // indirect
-	github.com/PowerDNS/lmdb-go v1.9.3 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/fredbi/uri v1.1.1 // indirect
 	github.com/fsnotify/fsnotify v1.9.0 // indirect
@@ -46,7 +45,6 @@ require (
 	github.com/srwiley/rasterx v0.0.0-20220730225603-2ab79fcdd4ef // indirect
 	github.com/stretchr/testify v1.10.0 // indirect
 	github.com/tyler-smith/go-bip39 v1.1.0 // indirect
-	github.com/virel-project/go-randomvirel v1.1.5 // indirect
 	github.com/yuin/goldmark v1.7.13 // indirect
 	github.com/zeebo/blake3 v0.2.4 // indirect
 	golang.org/x/crypto v0.41.0 // indirect

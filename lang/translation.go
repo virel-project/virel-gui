@@ -121,3 +121,20 @@ func init() {
 		}
 	}
 }
+
+func GetTranslation(l language.Tag) *Translation {
+	for i, v := range Lang {
+		if i == l {
+			return v
+		}
+	}
+	for i, v := range Lang {
+		ibase, _ := i.Base()
+		base, _ := l.Base()
+		if ibase == base {
+			return v
+		}
+	}
+
+	return Lang[language.English]
+}

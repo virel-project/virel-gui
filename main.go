@@ -15,7 +15,6 @@ import (
 	"virel-gui/mylayout"
 	"virel-gui/mywidget"
 
-	"github.com/cloudfoundry/jibber_jabber"
 	"github.com/virel-project/virel-blockchain/address"
 	"github.com/virel-project/virel-blockchain/config"
 	"github.com/virel-project/virel-blockchain/logger"
@@ -79,11 +78,19 @@ var w fyne.Window
 var a fyne.App
 
 func main() {
-	lang, err := jibber_jabber.DetectIETF()
-	if lang == "" || err != nil {
+	detectedLang, err := lang.DetectIETF()
+	if detectedLang == "" || err != nil {
 		fmt.Println("LANG environment variable is not set.", err)
 	}
-	fmt.Println("LANG is:", lang)
+	fmt.Println("LANG is:", detectedLang)
+	if len(detectedLang) > 0 {
+		tag, err := language.Parse(detectedLang)
+		if err != nil {
+			fmt.Println("failed to parse language:", err)
+		}
+		T = lang.GetTranslation(tag)
+	}
+	//T = lang.Lang[language.]
 
 	a = app.New()
 	w = a.NewWindow(fmt.Sprintf("Virel GUI v%d.%d.%d", VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH))
