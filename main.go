@@ -21,6 +21,7 @@ import (
 	"github.com/virel-project/virel-blockchain/logger"
 	"github.com/virel-project/virel-blockchain/transaction"
 	"github.com/virel-project/virel-blockchain/util"
+	"github.com/virel-project/virel-blockchain/util/updatechecker"
 	"github.com/virel-project/virel-blockchain/wallet"
 
 	"fyne.io/fyne/v2"
@@ -33,6 +34,10 @@ import (
 	"github.com/Xuanwo/go-locale"
 	"golang.org/x/text/language"
 )
+
+const VERSION_MAJOR = 1
+const VERSION_MINOR = 3
+const VERSION_PATCH = 1
 
 const TICKER = "VRL"
 
@@ -81,7 +86,7 @@ func main() {
 	fmt.Println("LANG is:", lang)
 
 	a = app.New()
-	w = a.NewWindow("Virel GUI")
+	w = a.NewWindow(fmt.Sprintf("Virel GUI v%d.%d.%d", VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH))
 
 	w.Resize(fyne.NewSize(800, 600))
 
@@ -139,6 +144,27 @@ func pageHome() {
 	body := container.NewStack(fr, container.NewVBox(layout.NewSpacer(), container.NewHBox(chooseLanguage, layout.NewSpacer())))
 
 	w.SetContent(body)
+
+	go func() {
+		status, remoteVersion, err := updatechecker.CheckForUpdate("https://api.github.com/repos/virel-project/virel-gui/releases/latest",
+			VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH)
+		if err != nil || status == updatechecker.StatusError {
+			log.Err(err)
+			return
+		}
+		if status != updatechecker.StatusUpToDate {
+			url, err := url.Parse("https://virel.org/docs/info/links/#wallets")
+			if err != nil {
+				log.Err(err)
+				return
+			}
+			content := container.NewVBox(
+				widget.NewLabel(fmt.Sprintf(T.UpdateRequired, remoteVersion)),
+				widget.NewHyperlink(url.String(), url),
+			)
+			CustomDialog(w, T.UpdateGui, T.Ok, content)
+		}
+	}()
 }
 
 func pageOpen() {

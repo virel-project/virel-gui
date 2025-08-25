@@ -23,7 +23,10 @@ func Dialog(w fyne.Window, title string, confirm, cancel string, content fyne.Ca
 	d := dialog.NewCustomConfirm(title, confirm, cancel, content, callback, w)
 	d.Show()
 }
-
+func CustomDialog(w fyne.Window, title string, dismiss string, content fyne.CanvasObject) {
+	d := dialog.NewCustom(title, dismiss, content, w)
+	d.Show()
+}
 func NewTitle(t string) *canvas.Text {
 	title := canvas.NewText(t, theme.Color(theme.ColorNameForeground))
 	title.TextStyle.Bold = true

@@ -70,6 +70,9 @@ type Translation struct {
 
 	Time          string
 	Confirmations string
+
+	UpdateGui      string
+	UpdateRequired string
 }
 
 var Lang = map[language.Tag]*Translation{}

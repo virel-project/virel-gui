@@ -110,8 +110,8 @@ github.com/tyler-smith/go-bip39 v1.1.0 h1:5eUemwrMargf3BSLRRCalXT93Ns6pQJIjYQN2n
 github.com/tyler-smith/go-bip39 v1.1.0/go.mod h1:gUYDtqQw1JS3ZJ8UWVcGTGqqr6YIN3CWg+kkNaLt55U=
 github.com/virel-project/go-randomvirel v1.1.5 h1:7GI0d3F21Mrkq20T8COzTuHOP0U46RWX7i0wwbTUx9Y=
 github.com/virel-project/go-randomvirel v1.1.5/go.mod h1:lmxQdpQELcNf3gO/lP8/ZHydzxvdVPy1Bsp9MtkI4Rc=
-github.com/virel-project/virel-blockchain v1.1.2 h1:RULeZ2QxQDHuyggkY1Vb4VzyrLW6Xk5d47Zf2be7RYU=
-github.com/virel-project/virel-blockchain v1.1.2/go.mod h1:eYwkOaneOqYZetT4FafA8lbg28ITj8rnV97d89jXvg4=
+github.com/virel-project/virel-blockchain v1.3.1 h1:nmIp/cWpriIV16S95OuNK3+4r9qdkJ1D51H/Rjh7A4c=
+github.com/virel-project/virel-blockchain v1.3.1/go.mod h1:eYwkOaneOqYZetT4FafA8lbg28ITj8rnV97d89jXvg4=
 github.com/yuin/goldmark v1.2.1/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
 github.com/yuin/goldmark v1.7.13 h1:GPddIs617DnBLFFVJFgpo1aBfe/4xcvMc3SB5t/D0pA=
 github.com/yuin/goldmark v1.7.13/go.mod h1:ip/1k0VRfGynBgxOz0yCqHrbZXhcjxyuS66Brc7iBKg=
