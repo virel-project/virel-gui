@@ -17,13 +17,13 @@ import (
 	"virel-gui/mywidget"
 	"virel-gui/save"
 
-	"github.com/virel-project/virel-blockchain/address"
-	"github.com/virel-project/virel-blockchain/config"
-	"github.com/virel-project/virel-blockchain/logger"
-	"github.com/virel-project/virel-blockchain/transaction"
-	"github.com/virel-project/virel-blockchain/util"
-	"github.com/virel-project/virel-blockchain/util/updatechecker"
-	"github.com/virel-project/virel-blockchain/wallet"
+	"github.com/virel-project/virel-blockchain/v2/address"
+	"github.com/virel-project/virel-blockchain/v2/config"
+	"github.com/virel-project/virel-blockchain/v2/logger"
+	"github.com/virel-project/virel-blockchain/v2/transaction"
+	"github.com/virel-project/virel-blockchain/v2/util"
+	"github.com/virel-project/virel-blockchain/v2/util/updatechecker"
+	"github.com/virel-project/virel-blockchain/v2/wallet"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
@@ -449,7 +449,7 @@ func pageWallet(wall *wallet.Wallet) {
 					Recipient: recv.Addr,
 					PaymentId: recv.PaymentId,
 				},
-			})
+			}, wall.GetHeight() >= config.HARDFORK_V1_HEIGHT)
 			if err != nil {
 				ErrorDialog(w, fmt.Errorf(T.FailedToCreateTx, err))
 				return

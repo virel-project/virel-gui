@@ -7,8 +7,8 @@ import (
 	"slices"
 	"time"
 
-	"github.com/virel-project/virel-blockchain/config"
-	"github.com/virel-project/virel-blockchain/wallet"
+	"github.com/virel-project/virel-blockchain/v2/config"
+	"github.com/virel-project/virel-blockchain/v2/wallet"
 )
 
 type HistoryObject struct {

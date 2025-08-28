@@ -3,7 +3,7 @@ package main
 import (
 	"strings"
 
-	"github.com/virel-project/virel-blockchain/wallet"
+	"github.com/virel-project/virel-blockchain/v2/wallet"
 )
 
 type NodeManger struct {
