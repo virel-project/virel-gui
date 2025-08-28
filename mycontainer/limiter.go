@@ -2,10 +2,10 @@ package mycontainer
 
 import (
 	"math"
-	"virel-gui/mylayout"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
+	"github.com/virel-project/virel-gui/v2/mylayout"
 )
 
 func NewWidthLimiter(maxw float32, objects ...fyne.CanvasObject) *fyne.Container {

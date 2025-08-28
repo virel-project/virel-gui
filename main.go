@@ -11,11 +11,12 @@ import (
 	"strconv"
 	"strings"
 	"time"
-	"virel-gui/lang"
-	"virel-gui/mycontainer"
-	"virel-gui/mylayout"
-	"virel-gui/mywidget"
-	"virel-gui/save"
+
+	"github.com/virel-project/virel-gui/v2/lang"
+	"github.com/virel-project/virel-gui/v2/mycontainer"
+	"github.com/virel-project/virel-gui/v2/mylayout"
+	"github.com/virel-project/virel-gui/v2/mywidget"
+	"github.com/virel-project/virel-gui/v2/save"
 
 	"github.com/virel-project/virel-blockchain/v2/address"
 	"github.com/virel-project/virel-blockchain/v2/config"

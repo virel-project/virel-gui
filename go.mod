@@ -1,4 +1,4 @@
-module virel-gui
+module github.com/virel-project/virel-gui/v2
 
 go 1.24.0
 
