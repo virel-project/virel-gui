@@ -450,7 +450,7 @@ func pageWallet(wall *wallet.Wallet) {
 					Recipient: recv.Addr,
 					PaymentId: recv.PaymentId,
 				},
-			}, wall.GetHeight() >= config.HARDFORK_V1_HEIGHT)
+			}, true)
 			if err != nil {
 				ErrorDialog(w, fmt.Errorf(T.FailedToCreateTx, err))
 				return

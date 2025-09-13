@@ -77,9 +77,14 @@ func (t *TxList) refreshTxs(wall *wallet.Wallet, height uint64, inc, fullscan bo
 				txTime -= config.TARGET_BLOCK_TIME * deltaHeight
 			}
 
-			amt := float64(tx.TotalAmount-tx.Fee) / config.COIN
-			if tx.Sender != nil && tx.Sender.Addr == wall.GetAddress().Addr {
-				amt = -amt - (float64(tx.Fee) / config.COIN)
+			// outgoing amount
+			amt := -float64(tx.TotalAmount+tx.Fee) / config.COIN
+			// incoming amount
+			if inc {
+				amt = 0
+				for _, v := range tx.Outputs {
+					amt += float64(v.Amount) / config.COIN
+				}
 			}
 
 			t.List = append(t.List, HistoryObject{
