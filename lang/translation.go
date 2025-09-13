@@ -37,6 +37,8 @@ type Translation struct {
 	Settings              string
 	Balance               string
 	BalanceCopied         string
+	StakedBalance         string
+	StakedBalanceCopied   string
 	Address               string
 	AddressCopied         string
 	ConfirmTransfer       string

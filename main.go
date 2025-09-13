@@ -352,11 +352,13 @@ var numRegex = regexp.MustCompile(`^([0-9]*[.])?[0-9]+$`)
 func pageWallet(wall *wallet.Wallet) {
 	yourBalance := mywidget.NewCard(a, theme.Color(theme.ColorNamePrimary),
 		util.FormatCoin(wall.GetBalance()), T.Balance, T.BalanceCopied)
+	stakedBalance := mywidget.NewCard(a, theme.Color(theme.ColorNameButton),
+		util.FormatCoin(wall.GetStakedBalance()), T.StakedBalance, T.StakedBalanceCopied)
 	yourAddress := mywidget.NewCard(a, theme.Color(theme.ColorNameButton), wall.GetAddress().String(),
 		T.Address, T.AddressCopied)
 
 	cardsGrid := container.New(mylayout.NewWrapLayout(800),
-		yourBalance, yourAddress)
+		yourBalance, stakedBalance, yourAddress)
 
 	myWallet := container.NewPadded(container.NewVBox(
 		cardsGrid,
@@ -587,6 +589,10 @@ func pageWallet(wall *wallet.Wallet) {
 				return
 			}
 			nodeManager.rpcUrls = strings.Split(nodeUrlInput.Text, ";")
+			if len(nodeManager.rpcUrls) > 0 {
+				a := nodeManager.rpcUrls[0]
+				wall.SetRpcDaemonAddress(a)
+			}
 			save.SaveRpcUrls([]byte(nodeUrlInput.Text))
 			nodeLbl.SetText(T.NodeAddress + ": " + wall.GetRpcDaemonAddress())
 		})
