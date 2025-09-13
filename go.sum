@@ -106,8 +106,8 @@ github.com/stretchr/testify v1.11.0 h1:ib4sjIrwZKxE5u/Japgo/7SJV3PvgjGiRNAvTVGqQ
 github.com/stretchr/testify v1.11.0/go.mod h1:wZwfW3scLgRK+23gO65QZefKpKQRnfz6sD981Nm4B6U=
 github.com/tyler-smith/go-bip39 v1.1.0 h1:5eUemwrMargf3BSLRRCalXT93Ns6pQJIjYQN2nyfOP8=
 github.com/tyler-smith/go-bip39 v1.1.0/go.mod h1:gUYDtqQw1JS3ZJ8UWVcGTGqqr6YIN3CWg+kkNaLt55U=
-github.com/virel-project/virel-blockchain/v2 v2.0.1 h1:/a9AElRPhLrn/rOjsfWq4I2l1i+pGD6He0jWoWOSLV0=
-github.com/virel-project/virel-blockchain/v2 v2.0.1/go.mod h1:Cs303PgNnKfx7QDMiDIplQrEelb+lxGuUNUL6VZbHTo=
+github.com/virel-project/virel-blockchain/v3 v2.0.1 h1:/a9AElRPhLrn/rOjsfWq4I2l1i+pGD6He0jWoWOSLV0=
+github.com/virel-project/virel-blockchain/v3 v2.0.1/go.mod h1:Cs303PgNnKfx7QDMiDIplQrEelb+lxGuUNUL6VZbHTo=
 github.com/yuin/goldmark v1.2.1/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
 github.com/yuin/goldmark v1.7.13 h1:GPddIs617DnBLFFVJFgpo1aBfe/4xcvMc3SB5t/D0pA=
 github.com/yuin/goldmark v1.7.13/go.mod h1:ip/1k0VRfGynBgxOz0yCqHrbZXhcjxyuS66Brc7iBKg=
