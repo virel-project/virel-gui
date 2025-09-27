@@ -1,3 +1,4 @@
 *.keys
 wasm
 virel-gui
+rpc-urls.txt

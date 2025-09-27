@@ -201,7 +201,7 @@ func pageOpen() {
 				return
 			}
 
-			wall, err := wallet.OpenWallet(nodeManager.Urls()[0], fileContent, []byte(walletPass.Text))
+			wall, err := wallet.OpenWallet(nodeManager.Urls()[0], fileContent, walletPass.Text)
 			if err != nil {
 				ErrorDialog(w, fmt.Errorf("failed to open wallet: %w", err))
 				pageOpen()
@@ -273,7 +273,7 @@ func pageCreate() {
 				return
 			}
 
-			wall, db, err := wallet.CreateWallet(nodeManager.Urls()[0], []byte(url.PathEscape(walletPass.Text)), runtime.GOOS == "js")
+			wall, db, err := wallet.CreateWallet(nodeManager.Urls()[0], walletPass.Text, runtime.GOOS == "js")
 			if err != nil {
 				ErrorDialog(w, fmt.Errorf("failed to create wallet: %w", err))
 			}
@@ -319,7 +319,7 @@ func pageRestore() {
 				pageOpen()
 				return
 			}
-			wall, db, err := wallet.CreateWalletFromMnemonic(nodeManager.Urls()[0], walletSeed.Text, []byte(walletPass.Text), runtime.GOOS == "js")
+			wall, db, err := wallet.CreateWalletFromMnemonic(nodeManager.Urls()[0], walletSeed.Text, walletPass.Text, runtime.GOOS == "js")
 			if err != nil {
 				ErrorDialog(w, fmt.Errorf("failed to open wallet: %w", err))
 				pageRestore()
@@ -487,10 +487,7 @@ func pageWallet(wall *wallet.Wallet) {
 	sendTitle := NewTitle(T.Transfer)
 	mySend := container.NewVBox(sendTitle, sendForm)
 
-	/*historyTitle := canvas.NewText(T.TabHistory, theme.Color(theme.ColorNameForeground))
-	historyTitle.TextStyle.Bold = true
-	historyTitle.TextSize = theme.TextSubHeadingSize()
-	historyTitle.Alignment = fyne.TextAlignCenter*/
+	myStaking := CreateStakingTab(wall)
 
 	txlist := TxList{
 		List: make([]HistoryObject, 0),
@@ -604,6 +601,7 @@ func pageWallet(wall *wallet.Wallet) {
 		container.NewTabItemWithIcon(T.TabHome, theme.HomeIcon(), myWallet),
 		container.NewTabItemWithIcon(T.TabTransfer, theme.MailSendIcon(), mySend),
 		container.NewTabItemWithIcon(T.TabHistory, theme.HistoryIcon(), historyList),
+		container.NewTabItemWithIcon(T.TabStaking, theme.StorageIcon(), myStaking.Container()),
 		container.NewTabItemWithIcon(T.Settings, theme.SettingsIcon(), settingsCont),
 	)
 
@@ -621,6 +619,7 @@ func pageWallet(wall *wallet.Wallet) {
 				}
 
 				yourBalance.SetTitle(util.FormatCoin(wall.GetBalance()))
+				stakedBalance.SetTitle(util.FormatCoin(wall.GetStakedBalance()))
 			})
 			if err != nil {
 				fmt.Println("failed to refresh:", err)
@@ -631,6 +630,7 @@ func pageWallet(wall *wallet.Wallet) {
 			if err != nil {
 				fmt.Println("error fetching tx list:", err)
 			}
+			myStaking.Update()
 
 			time.Sleep(10 * time.Second)
 		}

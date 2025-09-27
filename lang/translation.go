@@ -22,6 +22,7 @@ type Translation struct {
 	ErrWalletNameTooLong  string
 	ErrWalletNameTooShort string
 	ErrWalletNameInvalid  string
+	ErrInvalidDelegateId  string
 	Password              string
 	PasswordTooShort      string
 	RepeatPassword        string
@@ -49,6 +50,17 @@ type Translation struct {
 	YourSeedIs            string
 	StoreSeedSafely       string
 	UnderstandSeed        string
+	TabStaking            string
+	StakedUnlockHeight    string
+	StakedUnlockCopied    string
+	DelegateId            string
+	Copied                string
+	SetDelegate           string
+	SetDelegateConfirm    string
+	Stake                 string
+	Unstake               string
+	ConfirmStake          string
+	ConfirmUnstake        string
 
 	TransferConfirm       string
 	ReviewTransferDetails string

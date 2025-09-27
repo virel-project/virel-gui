@@ -58,6 +58,11 @@ func (c *Card) SetTitle(title string) {
 	c.titleObj.Text = title
 	c.titleObj.Refresh()
 }
+func (c *Card) SetComment(comment string) {
+	c.Comment = comment
+	c.commentObj.Text = comment
+	c.commentObj.Refresh()
+}
 
 func (item *Card) CreateRenderer() fyne.WidgetRenderer {
 	fmt.Println("addressBox create renderer")
