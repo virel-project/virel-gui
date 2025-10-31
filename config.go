@@ -4,4 +4,4 @@ const RPC_URLS = "https://node1.virel.org:443;https://node2.virel.org:443;https:
 
 const VERSION_MAJOR = 3
 const VERSION_MINOR = 1
-const VERSION_PATCH = 2
+const VERSION_PATCH = 11

@@ -9,7 +9,7 @@ require (
 	github.com/BurntSushi/toml v1.5.0
 	github.com/Xuanwo/go-locale v1.1.3
 	github.com/cloudfoundry/jibber_jabber v0.0.0-20151120183258-bcc4c8345a21
-	github.com/virel-project/virel-blockchain/v3 v3.1.2
+	github.com/virel-project/virel-blockchain/v3 v3.1.11
 	golang.org/x/text v0.28.0
 )
 
